@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+	<link rel="stylesheet" href="{{ url_for('static', filename='assets/ms_icons/icons.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='CSS/global.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='CSS/main.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='CSS/main.mdc.sm.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='CSS/main.mdc.md.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='CSS/main.mdc.lg.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='CSS/main.mdc.xl.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='CSS/main.mdc.xxl.css') }}">
+	<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+	<script src="https://kit.fontawesome.com/92e004f315.js" crossorigin="anonymous"></script>
+	<title>FAQs</title>
+</head>
+
+<body class="app" id="faqs_root">
+	<!--
+			Header
+	-->
+	<header class="app-header">
+		<div class="row-space occupy-x hide-on-toggle" style="gap:var(--md)">
+			<span class="body-text-md bold-text row-left -align-center">
+				<span class="ms-rounded -filled">star</span>&nbsp;AlgoTrade
+			</span>
+			<span class="icon-button ms-rounded toggle_sidebar">menu</span>
+		</div>
+		<div class="col-center search-results"></div>
+		<!--
+  			Sidebar for laptops and larger screens only
+  	-->
+		<div class="app-sidebar mdc-ss mdc sm-md-hidden hide-on-toggle">
+			<div class="row-right" style="gap:var(--xl)">
+				<a href="{{url_for('main.welcome')}}" class="app-navlink mdc-ss" data-route="home"> <span>Home</span> </a>
+				<a href="{{url_for('main.faq')}}" class="app-navlink mdc-ss active" data-route="faqs"><span>FAQs</span> </a>
+				<a href="{{url_for('auth.login')}}" class="app-navlink button primary-button sm c-normal"
+					data-route="get-started">Get started</a>
+			</div>
+		</div>
+		<!--
+  			Search bar
+  	-->
+		<div class="row-center -hidden">
+			<div class="inp-field search c-normal occupy-x" style="gap:var(--xs)">
+				<button class="icon-button search-button">
+					<span class="ms-rounded">search</span>
+				</button>
+				<input class="search-bar" type="search" name="faqsPageSearchBar" id="faqsPageSearchBar"
+					placeholder="Search FAQs" autocomplete="false">
+			</div>
+		</div>
+	</header>
+	<!--
+			Sidebar for mobile devices and tablets only
+	-->
+	<div class="app-sidebar mdc-sm mdc lg-xl-xxl-hidden" style="gap:var(--xl)">
+		<div class="row-right">
+			<button class="icon-button ms-rounded toggle_sidebar">Close</button>
+		</div>
+		<div class="col-center" style="gap:var(--sm)">
+			<a href="./index.html" class="app-navlink mdc-sm c-normal" data-route="home"> <span
+				class="ms-rounded">home</span> <span>Home</span> </a>
+			<a href="./faqs.html" class="app-navlink mdc-sm c-normal active" data-route="faqs"> <span
+				class="ms-rounded">help</span> <span>FAQs</span> </a>
+			<a href="./auth.html" class="button app-navlink primary-button sm c-normal occupy-x"
+				data-route="get-started">Get started</a>
+		</div>
+	</div>
+	<main class="route col-center active -gap-md" id="home">
+		<section class="hero mdc mdc-ss -pyt-md">
+			<!--
+    			Hero image appears larger than normal images. Also, the numbers attached
+    			to img denotes the aspect ratio. 1:1 and 16:9
+    	-->
+			<div class="img img-16-9"
+				style="background-image: url('./assets/images/landing_page_hero_robot_img.jpg');border-radius: 20px 20px 0 0;">
+				<div class="img-fade -justify-left">
+					<div class="col-left mdc-ss -pxy-md -gap-sm">
+						<span class="title-text bold-text contrast">Frequently Asked Questions</span>
+						<span class="body-text-md contrast">
+							Find answers to common questions or contact us for help.
+						</span>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- 
+  			Frequently asked questions
+  	-->
+		<section class="mdc mdc-ss -pyt-md -pxl-sm -pxr-sm">
+			<div class="col-center -gap-sm occupy-x">
+				<div class="card outlined-card accordion col-left mdc-ss -pxy-sm -gap-sm c-normal occupy-x" data-aos="fade-up" data-delay="1000">
+					<div class="row-left -justify-space occupy-x">
+						<span class="body-text-md bold-text">What is AlgoTrade?</span>
+						<button class="accordion-toggle text-button md ms-rounded">keyboard_arrow_down</button>
+					</div>
+					<div class="accordion-content col-left">
+						<span class="body-text-sm">
+							AlgoTrade is a place where to be sincerely honest in my humble opinion without
+							being
+							sentimental of course without offending anyone who may think differently from my
+							point
+							of view and without hiding any thoughts in my mind and without lies,to the actual
+							truth
+							with my clear open mind and clean heart,expressing what ever is embedded inside me
+							for
+							a long time which I didn't say just because I was nervous.But Today,
+							by gathering all the courage and motivation, I just want to say that I actually
+							feel and
+							think that I have absolutely nothing to say.
+						</span>
+					</div>
+				</div>
+				<div class="card outlined-card accordion col-left mdc-ss -pxy-sm -gap-sm c-normal occupy-x" data-aos="fade-up" data-aos-delay="1000" data-aos-duration="1200">
+					<div class="row-left -justify-space occupy-x">
+						<span class="body-text-md bold-text">How to avoid frauds</span>
+						<button class="accordion-toggle text-button md ms-rounded">keyboard_arrow_down</button>
+					</div>
+					<div class="accordion-content col-left">
+						<span class="body-text-sm">
+							AlgoTrade is a place where to be sincerely honest in my humble opinion without
+							being
+							sentimental of course without offending anyone who may think differently from my
+							blah.
+						</span>
+					</div>
+				</div>
+				<div class="card outlined-card accordion col-left mdc-ss -pxy-sm -gap-sm c-normal occupy-x" data-aos="fade-up" data-aos-delay="1200" data-aos-duration="1300">
+					<div class="row-left -justify-space occupy-x">
+						<span class="body-text-md bold-text">Who really is Efe?</span>
+						<button class="accordion-toggle text-button md ms-rounded">keyboard_arrow_down</button>
+					</div>
+					<div class="accordion-content col-left">
+						<span class="body-text-sm">
+							AlgoTrade is a place where to be sincerely honest in my humble opinion without
+							being
+							sentimental of course without offending anyone who may think differently from my
+							blah.
+						</span>
+					</div>
+				</div>
+				<div class="card outlined-card accordion col-left mdc-ss -pxy-sm -gap-sm c-normal occupy-x" data-aos="fade-up" data-aos-delay="1300" data-aos-duration="1400">
+					<div class="row-left -justify-space occupy-x">
+						<span class="body-text-md bold-text">Avoid scams by Endy</span>
+						<button class="accordion-toggle text-button md ms-rounded">keyboard_arrow_down</button>
+					</div>
+					<div class="accordion-content col-left">
+						<span class="body-text-sm">
+							AlgoTrade is a place where to be sincerely honest in my humble opinion without
+							being
+							sentimental of course without offending anyone who may think differently from my
+							blah.
+						</span>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!--
+				Contact section
+		-->
+		<section class="mdc mdc-ss -pxl-sm -pxr-sm -pyt-xl -pyb-md" data-aos="fade-up" data-aos-delay="1400" data-aos-duration="1500">
+			<div class="col-center -gap-md">
+				<span class="subtitle-text-md bold-text">Contact Us</span>
+				<form id="faqs-contact-form" style="max-width:600px">
+					<div class="col-center -gap-sm">
+						<div class="col-left -gap-xs occupy-x">
+							<div class="inp-field char-inp sm c-normal">
+								<input type="text" name="contact-form-subject" id="contact-form-subject" placeholder="Subject">
+							</div>
+							<div class="inp-field--tooltip -gap-xs" id="contact-form-subject_tooltip">
+								<span class="ms-rounded body-text-sm">error</span>
+								<span class="body-text-xs">Please add a subject!</span>
+							</div>
+						</div>
+						<div class="col-left -gap-xs occupy-x">
+							<div class="inp-field char-inp sm c-normal">
+								<input type="text" name="contact-form-message" id="contact-form-message"
+									hidden>
+								<div class="textarea" id="contact-form-textarea" contenteditable="true">How may we help you?&nbsp;</div>
+							</div>
+							<div class="inp-field--tooltip -gap-xs" id="contact-form-message_tooltip">
+								<span class="ms-rounded body-text-sm">error</span>
+								<span class="body-text-xs">
+									Please enter a valid message!
+								</span>
+							</div>
+						</div>
+						<div class="row-center -gap-sm">
+							<div class="inp-field reset button secondary-button sm c-normal" style="background-color: var(--dark-accent);color: var(--accent)!important;">
+								<input type="reset" value="Cancel">
+							</div>
+							<div class="inp-field submit button primary-button sm c-normal">
+								<input type="submit" value="Submit">
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</section>
+	</main>
+	<!--
+			Container for null search results
+	-->
+	<main class="row-center null-search-results">
+		<span class="subtitle-text-sm">No Results for</span>&nbsp;
+		<span class="subtitle-text-sm highlight"></span>
+	</main>
+	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	<script>AOS.init();</script>
+	<script src="./JS/main.js"></script>
+	<script src="./routesjs/faqs.js"></script>
+</body>
+
+</html>

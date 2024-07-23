@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/assets/ms_icons/icons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/CSS/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/CSS/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/CSS/main.mdc.sm.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/CSS/main.mdc.md.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/CSS/main.mdc.lg.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/CSS/main.mdc.xl.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/CSS/main.mdc.xxl.css') }}">
+
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <script src="https://kit.fontawesome.com/92e004f315.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Dashboard</title>
+</head>
+<body class="app" id="dashboard_root">
+	<!--
+			Header
+	-->
+	<header class="app-header">
+  	<div class="row-space occupy-x hide-on-toggle" style="gap:var(--md)"> 
+  		<span class="body-text-md bold-text row-left -align-center">
+  			<span class="ms-rounded -filled">star</span>&nbsp;AlgoTrade
+  		</span>
+  		<span class="icon-button ms-rounded toggle_sidebar">menu</span>
+  	</div>
+  	<div class="col-center search-results"></div>
+  	<!--
+  			Sidebar for laptops and larger screens only
+  	-->
+  	<div class="app-sidebar mdc-ss mdc sm-md-hidden hide-on-toggle">
+    	<div class="row-right" style="gap:var(--xl)"> 
+    		<a href="./dashboard" class="app-navlink mdc-ss active" data-scrollto="dashboard" data-route="dashboard"> <span>Dashboard</span> </a> 
+    		<a href="./marketplace" class="app-navlink mdc-ss" data-route="marketplace"> <span>Marketplace</span> </a> 
+    		<a href="./support" class="app-navlink mdc-ss" data-route="support"> <span>Support</span> </a> 
+    		<a href="./settings" class="app-navlink mdc-ss" data-route="settings"> <div class="avatar avatar-1-1 c-round"></div> </a> 
+    	</div>
+  	</div>
+  	<!--
+  			Search bar
+  	-->
+  	<div class="row-center -hidden">
+  		<div class="inp-field search c-normal occupy-x" style="gap:var(--xs)">
+  			<button class="icon-button search-button">
+  				<span class="ms-rounded">search</span>
+  			</button>
+  			<input class="search-bar" type="search" name="homePageSearchBar" id="homePageSearchBar"
+  				placeholder="Search crypto" autocomplete="false">
+  		</div>
+  	</div>
+	</header>
+	<!--
+			Sidebar for mobile devices and tablets only
+	-->
+	<div class="app-sidebar mdc-sm mdc lg-xl-xxl-hidden" style="gap:var(--xl)">
+  	<div class="row-right"> 
+  		<button class="icon-button ms-rounded toggle_sidebar">Close</button> 
+  	</div>
+  	<!-- 
+  			N/B: app-navlink with no href is not a router!
+  			what is does is that it scrolls the window to a section with matching id
+  			as its data-scrollto value.
+  			
+  			Those with both a href and data-scrollto do almost the same scroll function,
+  			but are routers too
+  	-->
+  	<div class="col-center" style="gap:var(--sm)"> 
+      <a href="./settings" class="app-navlink mdc-sm mdc-ss c-normal" data-route="settings"> 
+        <div class="user-profile-icon avatar sm c-round" style="background-image: url('../assets/images/testimonials_client_images/eva_b.jpg');
+        margin: 0;"></div> 
+        <span class="user-full-name body-text-md bold-text">{{current_user.firstname}}</span>
+      </a>
+  		<a href="./dashboard" class="app-navlink mdc-sm mdc-ss c-normal active" data-scrollto="dashboard" data-route="dashboard"> 
+        <span class="ms-rounded">home</span>
+        <span>Dashboard</span>
+      </a> 
+    	<a href="./marketplace" class="app-navlink mdc-sm mdc-ss c-normal" data-route="marketplace"> 
+        <span class="ms-rounded">store</span>
+        <span>Marketplace</span> 
+      </a> 
+      <a href="./support" class="app-navlink mdc-sm mdc-ss c-normal" data-route="support"> 
+        <span class="ms-rounded">support_agent</span>
+        <span>Support</span> 
+      </a> 
+  	</div>
+	</div>
+	<!-- 
+			This section element below serves as a scrollto element of the dashboard navlink, why? because the offsetTop prop of the window.scrollTo
+			js function scrolls the window FULLY to the top of the page. TRY deleting the home id from it and adding it instead to the section
+			that is nested in the main element to see what I'm talking about.
+	-->
+	<section id="dashboard" hidden></section>
+  <main class="route col-center active -gap-md">
+  	<section class="mdc mdc-ss -pyt-md">
+      <div class="row-space mdc br col-2 -gap-sm -pxy-sm hide-if-modal-isActive">
+        <span class="title-text bold-text">Dashboard</span>
+        <!--
+            User primary actions: deposit and withdrawal
+        -->
+        <div class="row-right -gap-xs">
+          <button class="open-deposit-modal primary-button xs occupy-x" style="max-width: 180px;">Deposit</button>
+          <button class="open-withdrawal-modal secondary-button xs occupy-x" style="max-width: 180px;">Withdraw</button>
+        </div>
+      </div>
+      <!--
+          User primary actions: deposit modal
+      -->
+      <div class="tab-content-wrapper deposit-modal -pxy-sm c-normal">
+        <div class="tab-content col-center -gap-md form-type deposit-tab active" data-tab="crypto-payment-method--tab">
+          <div class="col-left occupy-x">
+            <div class="row-left -gap-sm">
+              <span class="close-deposit-modal ms-rounded">arrow_back</span>
+              <span class="subtitle-text-md">Fund wallet</span>
+            </div>
+          </div>
+          <form action="" id="crypto-payment-method--form">
+            {{ form.hidden_tag() }}
+            <div class="col-center -gap-md">
+              <div class="col-left -gap-xs occupy-x">
+                <label class="outside-inp" for="signup-form-fname">
+                  <span class="body-text-sm medium-text">Select preferred crypto</span>
+                </label>
+                <div class="row-left occupy-x">
+                  <!--
+                      Crypto tokens custom selection element
+                  -->
+                  <div class="card filled-card col-left sm c-normal occupy-x" id="deposit-crypto-tokens">
+                    <div class="row-left -gap-sm -pxy-sm occupy-x selected-token active"></div>
+                    <div class="row-left -gap-sm -pxy-sm occupy-x token active" data-option="btc">
+                      <option value="BTC" id="btc" hidden></option>
+                      <div class="avatar xs"></div>
+                      <span class="body-text-sm row-center -gap-xs bold-text">
+                        <span class="selected-purchase-amt"></span>
+                        <span>BTC</span>
+                      </span>
+                    </div>
+                    {% for option in form.crypto_option.choices %}
+                    <div class="row-left -gap-sm -pxy-sm occupy-x token" data-option="{{option.lower()}}">
+                      <option value="{{option}}" id="{{option.lower()}}" hidden></option>
+                      <div class="avatar xs"></div>
+                      <span class="body-text-sm row-center -gap-xs bold-text">
+                        <span class="selected-purchase-amt"></span>
+                        <span>{{option}}</span>
+                      </span>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+                <div class="inp-field--tooltip -gap-xs" id="deposit-crypto-tokens_tooltip">
+                  <span class="ms-rounded body-text-sm">error</span>
+                  <span class="body-text-xs">Select at least one crypto token!</span>
+                </div>
+                <div class="inp-field--tooltip -gap-xs" id="empty-amt_tooltip">
+                  <span class="ms-rounded body-text-sm">error</span>
+                  <span class="body-text-xs">Minimum amount is $150.00</span>
+                </div>
+              </div>
+              <div class="col-left -gap-xs occupy-x">
+                <label class="outside-inp">
+                  <span class="body-text-sm medium-text">How much will you like to spend?</span>
+                </label>
+                <div class="row-left -align-start -gap-sm occupy-x">
+                  <div class="inp-field char-inp xs -gap-sm c-normal" style="width: auto;">
+                    <div class="avatar xs" style="background-image: url('../assets/images/dashboard_crypto_token_icons/usdt.png');"></div>
+                    <span class="body-text-sm">USD</span>
+                  </div>
+                  <div class="col-left -gap-xs occupy-x">
+                    <div class="inp-field char-inp sm c-normal">
+                      <input type="tel" name="purchase-amt" id="purchase-amt" placeholder="min 150.00">
+                    </div>
+                    <div class="inp-field--tooltip -gap-xs" id="purchase-amt-min_tooltip">
+                      <span class="ms-rounded body-text-sm">error</span>
+                      <span class="body-text-xs">Minimum amount is $150.00</span>
+                    </div>
+                    <div class="inp-field--tooltip -gap-xs" id="purchase-amt-max_tooltip">
+                      <span class="ms-rounded body-text-sm">error</span>
+                      <span class="body-text-xs">Maximum amount is $999999.00</span>
+                    </div>
+                  </div>
+                </div> 
+              </div>
+              <div class="inp-field submit proceed-to-payment button primary-button sm c-normal">
+                {{ form.submit() }}
+              </div>
+            </div>
+          </form>
+
+        </div>
+        <div class="tab-content col-center -gap-md form-type" data-tab="crypto-payment-address--tab">
+          <form action="" id="crypto-payment-address--form">
+            <div class="col-left -gap-sm -myb-md occupy-x">
+              <span class="subtitle-text-md">Complete purchase</span>
+              <span class="body-text-sm" style="color: var(--light)">
+                To fund your wallet, send the set amount to the wallet address provided below to complete the purchase.
+                The payment window will close after 5 minutes elapses.
+              </span>
+            </div>
+            <div class="col-center -myb-md occupy-x">
+              <div class="card filled-card row-center subtitle-text-sm -pxy-xs medium-text c-normal" style="min-width: 120px" id="timer">05:00</div>
+            </div>
+            <div class="col-center -gap-md">
+              <div class="col-left -gap-xs occupy-x">
+                <div class="row-left occupy-x">
+                  <div class="card filled-card col-left sm c-normal occupy-x" id="selected-crypto-token">
+                    <span class="body-text-md -pxl-sm -pxr-sm -pyt-sm">You will pay</span>
+                    <div class="row-left -gap-sm -pxy-sm occupy-x selected-token-payment"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-left -gap-xs occupy-x wallet-addr-to-copy" style="color: var(--light);white-space: nowrap;overflow-x: auto;">
+                <div class="row-left -gap-xs" style="color: var(--accent);">
+                  <span class="body-text-xs ms-rounded">info</span>
+                  <span class="body-text-xs">Click on wallet address to copy</span>
+                </div>
+                <div class="card filled-card col-left sm -pxy-sm c-normal occupy-x" id="wallet-addr-container"
+                style="user-select: auto!important;"></div>
+                <span class="copied-addr-tooltip -align-center body-text-xs occupy-x">Wallet address copied! <span class="ms-rounded">check</span></span>
+              </div>
+              <div class="mdc br col-2 row-space -gap-xs c-normal">
+                <button class="row-center secondary-button sm -gap-xs switch-tab-btn" id="crypto-payment-method--tab">
+                  <span class="ms-rounded">close</span>
+                  <span>Cancel payment</span>
+                </button>
+                <div class="inp-field submit primary-button sm">
+                  <input type="submit" value="Confirm payment" id="confirm-payment">
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!--
+          User primary actions: withdrawal modal
+      -->
+      <div class="col-center withdrawal-modal -pxy-sm -gap-md c-normal">
+        <div class="col-left occupy-x">
+          <div class="row-left -gap-sm">
+            <span class="close-withdrawal-modal ms-rounded">arrow_back</span>
+            <span class="subtitle-text-md">Withdraw funds</span>
+          </div>
+        </div>
+        <form action="" id="withdrawal-form">
+          <div class="col-center -gap-md">
+            <div class="col-left -gap-xs occupy-x">
+              <label class="outside-inp" for="deposit-crypto-tokens">
+                <span class="body-text-sm medium-text">Select preferred payment method</span>
+              </label>
+              <div class="row-left occupy-x">
+                <!--
+                    Payment method tokens custom selection element
+                -->
+                <div class="card filled-card col-left sm c-normal occupy-x" id="withdrawal-crypto-tokens">
+                  <div class="row-left -gap-sm -pxy-sm occupy-x selected-token active"></div>
+                  <div class="row-left -gap-sm -pxy-sm occupy-x token active" data-option="btc">
+                    <option value="BTC" id="btc" hidden></option>
+                    <div class="avatar xs"></div>
+                    <span class="body-text-sm row-center -gap-xs bold-text">
+                      <span>BTC</span>
+                    </span>
+                  </div>
+                  <div class="row-left -gap-sm -pxy-sm occupy-x token" data-option="eth">
+                    <option value="ETH" id="eth" hidden></option>
+                    <div class="avatar xs"></div>
+                    <span class="body-text-sm row-center -gap-xs bold-text">
+                      <span>Ethereum</span>
+                    </span>
+                  </div>
+                  <div class="row-left -gap-sm -pxy-sm occupy-x token" data-option="bnb">
+                    <option value="BNB" id="bnb" hidden></option>
+                    <div class="avatar xs"></div>
+                    <span class="body-text-sm row-center -gap-xs bold-text">
+                      <span>Binance Smart Chain</span>
+                    </span>
+                  </div>
+                  <div class="row-left -gap-sm -pxy-sm occupy-x token" data-option="usdt">
+                    <option value="USDT" id="usdt" hidden></option>
+                    <div class="avatar xs"></div>
+                    <span class="body-text-sm row-center -gap-xs bold-text">
+                      <span>Tether USD</span>
+                    </span>
+                  </div>
+                  <div class="row-left -gap-sm -pxy-sm occupy-x token" data-option="sol">
+                    <option value="SOL" id="sol" hidden></option>
+                    <div class="avatar xs"></div>
+                    <span class="body-text-sm row-center -gap-xs bold-text">
+                      <span>Solana</span>
+                    </span>
+                  </div>
+                  <div class="row-left -gap-sm -pxy-sm occupy-x token" data-option="ltc">
+                    <option value="LTC" id="ltc" hidden></option>
+                    <div class="avatar xs"></div>
+                    <span class="body-text-sm row-center -gap-xs bold-text">
+                      <span>Litecoin</span>
+                    </span>
+                  </div>
+                  <div class="row-left -gap-sm -pxy-sm occupy-x token" data-option="trx">
+                    <option value="TRX" id="trx" hidden></option>
+                    <div class="avatar xs"></div>
+                    <span class="body-text-sm row-center -gap-xs bold-text">
+                      <span>Tron</span>
+                    </span>
+                  </div>
+                  <div class="row-left -gap-sm -pxy-sm occupy-x token" data-option="matic">
+                    <option value="DOGE" id="doge" hidden></option>
+                    <div class="avatar xs"></div>
+                    <span class="body-text-sm row-center -gap-xs bold-text">
+                      <span>Doge</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="inp-field--tooltip -gap-xs" id="withdrawal-crypto-tokens_tooltip">
+                <span class="ms-rounded body-text-sm">error</span>
+                <span class="body-text-xs">Please select a payment method!</span>
+              </div>
+              <div class="inp-field--tooltip -gap-xs" id="empty-amt_tooltip">
+                <span class="ms-rounded body-text-sm">error</span>
+                <span class="body-text-xs">Minimum withdraw amount is $500.00</span>
+              </div>
+            </div>
+            <div class="col-left -gap-xs occupy-x">
+              <label class="outside-inp">
+                <span class="body-text-sm medium-text">Destination wallet address</span>
+              </label>
+              <div class="row-left -gap-sm occupy-x">
+                <div class="col-left -gap-xs occupy-x">
+                  <div class="inp-field char-inp sm c-normal">
+                    <input type="tel" name="destination-wallet-addr" id="destination-wallet-addr" placeholder="Enter your receiving wallet address">
+                  </div>
+                  <div class="inp-field--tooltip -gap-xs" id="destination-wallet-addr_tooltip">
+                    <span class="ms-rounded body-text-sm">error</span>
+                    <span class="body-text-xs">Must enter a valid destination wallet address!</span>
+                  </div>
+                </div>
+              </div> 
+            </div>
+            <div class="col-left -gap-xs occupy-x">
+              <label class="outside-inp">
+                <span class="body-text-sm medium-text">Secret phrase associated with the destination wallet address</span>
+              </label>
+              <div class="row-left -gap-sm occupy-x">
+                <div class="col-left -gap-xs occupy-x">
+                  <div class="inp-field char-inp sm c-normal">
+                    <input type="tel" name="secret-phrase" id="secret-phrase" placeholder="Enter your secret phrase">
+                  </div>
+                  <div class="inp-field--tooltip -gap-xs" id="destination-wallet-addr_tooltip">
+                    <span class="ms-rounded body-text-sm">error</span>
+                    <span class="body-text-xs">Must enter a valid secret phrase associated with the destination address!</span>
+                  </div>
+                </div>
+              </div> 
+            </div>
+            <div class="col-left -gap-xs occupy-x">
+              <label class="outside-inp">
+                <span class="body-text-sm medium-text">Withdrawal amount</span>
+              </label>
+              <div class="row-left -align-start -gap-sm occupy-x">
+                <div class="inp-field char-inp xs -gap-sm c-normal" style="width: auto;">
+                  <div class="avatar xs" style="background-image: url('../assets/images/dashboard_crypto_token_icons/usdt.png');"></div>
+                  <span class="body-text-sm">USD</span>
+                </div>
+                <div class="col-left -gap-xs occupy-x">
+                  <div class="inp-field char-inp sm c-normal">
+                    <input type="tel" name="withdrawal-amt" id="withdrawal-amt" placeholder="min 500.00">
+                  </div>
+                  <div class="inp-field--tooltip -gap-xs" id="withdrawal-amt-min_tooltip">
+                    <span class="ms-rounded body-text-sm">error</span>
+                    <span class="body-text-xs">Minimum withdraw amount is $500.00</span>
+                  </div>
+                  <div class="inp-field--tooltip -gap-xs" id="withdrawal-amt-max_tooltip">
+                    <span class="ms-rounded body-text-sm">error</span>
+                    <span class="body-text-xs">Maximum amount is $100000.00</span>
+                  </div>
+                </div>
+              </div> 
+            </div>
+            <div class="inp-field submit place-withdrawal button primary-button sm c-normal">
+              <input class="switch-tab-btn" type="submit" value="Place withdrawal" id="place-withdrawal">
+            </div>
+          </div>
+        </form>
+      </div>
+      <!--
+    			Panel showing user balances, trading margin and spot margin
+    	-->
+      <div class="user-panel row-center mdc br col-4 mdc-ss -pyt-sm -pyb-sm -pxl-sm -pxr-sm -gap-xs hide-if-modal-isActive">
+        <div class="card filled-card col-center -pyt-sm -pyb-sm -pxl-lg -pxr-lg -gap-xs c-normal occupy-x">
+          <span class="user-total-balance subtitle-text-md bold-text">{{current_user.formatted_balance}}</span>
+          <span class="body-text-sm light-text">Total balance</span>
+        </div>
+        <div class="card filled-card col-center -pyt-sm -pyb-sm -pxl-lg -pxr-lg -gap-xs c-normal occupy-x">
+          <span class="user-available-balance subtitle-text-md bold-text">{{profit_balance}}</span>
+          <span class="body-text-sm light-text">Daily Profit</span>
+        </div>
+        <div class="card filled-card col-center -pyt-sm -pyb-sm -pxl-lg -pxr-lg -gap-xs c-normal occupy-x">
+          <span class="user-trade-margin subtitle-text-md bold-text">{{profit}}</span>
+          <span class="body-text-sm light-text">Profit Percentage</span>
+        </div>
+        <div class="card filled-card col-center -pyt-sm -pyb-sm -pxl-lg -pxr-lg -gap-xs c-normal occupy-x">
+          <span class="user-spot-margin subtitle-text-md bold-text">{{spot_margin}}</span>
+          <span class="body-text-sm light-text">Spot margin</span>
+        </div>
+      </div>
+  	</section>
+    <!--
+        Tab content to show chart info on daily trade data, weekly and monthly
+  	-->
+  	<section class="mdc mdc-ss -pyt-md -pyb-md -pxl-sm -pxr-sm -gap-md hide-if-modal-isActive" style="color: var(--light)">
+      <div class="col-center -gap-md occupy-x">
+        <!--
+            This is the main parent wrapper for the tab content container which is parent to individual chart
+            it has a display type of grid and allows for content switching efficiently.
+        -->
+        <div class="tab-content-wrapper">
+          <!--
+              Closest parent container for the daily chart tab
+          -->
+          <div class="tab-content col-center -gap-md form-type active" data-tab="weekly-chart">
+            <!-- 
+                Daily
+                Profit and loss
+                Cummulative
+            -->
+            <div class="row-center -gap-xs occupy-x">
+              <div class="weekly-chart row-center profit-and-loss">
+                <canvas id="myChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  	</section>
+  	<!--
+        Transaction record list
+  	-->
+  	<section class="mdc mdc-ss -pyt-md -pyb-md -pxl-sm -pxr-sm hide-if-modal-isActive" style="color: var(--light)">
+      <div class="trade-record-list--nav row-center -gap-xs occupy-x">
+        <button class="xs trade-record-tab--btn daily-record c-normal occupy-x active" id="daily-record">Daily</button>
+        <button class="xs trade-record-tab--btn weekly-record c-normal occupy-x" id="weekly-record">Weekly</button>
+        <button class="xs trade-record-tab--btn monthly-record c-normal occupy-x" id="monthly-record">Monthly</button>
+      </div>
+      <div class="tab-content-wrapper trade-record-wrapper col-center occupy-x" style="color: inherit;">
+        {% for st, unst in daily %}
+        <div class="trade-record-tab daily-trade-record col-left -pyt-sm -pyb-sm -gap-sm active" data-record="daily-record">
+          <div class="row-space successful-trades occupy-x">
+            <div class="col-left">             
+              <span class="body-text-md bold-text">Profitable trades</span>
+              <span class="body-text-sm">Total number of profitable trades today</span>
+            </div>
+            <div class="row-right">
+              <span class="number-of-trades subtitle-text-sm" id="daily-profit">{{st}}</span>
+            </div>
+          </div>
+          <div class="row-space successful-trades occupy-x">
+            <div class="col-left">
+              <span class="body-text-md bold-text">Unprofitable trades</span>
+              <span class="body-text-sm">Total number of unprofitable trades today</span>
+            </div>
+            <div class="row-right">
+              <span class="number-of-trades subtitle-text-sm" id="daily-loss">{{unst}}</span>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% for st, unst in weekly %}
+        <div class="trade-record-tab weekly-trade-record col-left -pyt-sm -pyb-sm -gap-sm" data-record="weekly-record">
+          <div class="row-space successful-trades occupy-x">
+            <div class="col-left">
+              <span class="body-text-md bold-text">Profitable trades</span>
+              <span class="body-text-sm">Total number of profitable trades in the past 7 days</span>
+            </div>
+            <div class="row-right">
+              <span class="number-of-trades subtitle-text-sm" id="weekly-profit">{{st}}</span>
+            </div>
+          </div>
+          <div class="row-space successful-trades occupy-x">
+            <div class="col-left">
+              <span class="body-text-md bold-text">Unprofitable trades</span>
+              <span class="body-text-sm">Total number of unprofitable trades in the past 7 days</span>
+            </div>
+            <div class="row-right">
+              <span class="number-of-trades subtitle-text-sm" id="weekly-loss">{{unst}}</span>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% for st, unst in monthly %}
+        <div class="trade-record-tab monthly-trade-record col-left -pyt-sm -pyb-sm -gap-sm" data-record="monthly-record">
+          <div class="row-space successful-trades occupy-x">
+            <div class="col-left">
+              <span class="body-text-md bold-text">Profitable trades</span>
+              <span class="body-text-sm">Total number of profitable trades in the past 30 days</span>
+            </div>
+            <div class="row-right">
+              <span class="number-of-trades subtitle-text-sm" id="monthly-profit">{{st}}</span>
+            </div>
+          </div>
+          <div class="row-space successful-trades occupy-x">
+            <div class="col-left">
+              <span class="body-text-md bold-text">Unprofitable trades</span>
+              <span class="body-text-sm">Total number of unprofitable trades in the past 30 days</span>
+            </div>
+            <div class="row-right">
+              <span class="number-of-trades subtitle-text-sm" id="monthly-loss">{{unst}}</span>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+	</main>
+	<!--
+			Container for null search results
+	-->
+	<main class="row-center null-search-results">
+		<span class="subtitle-text-sm">No Results for</span>&nbsp;
+		<span class="subtitle-text-sm highlight"></span>
+	</main>
+  <script type="text/javascript">
+    const chart_data = {{ chart_data|tojson }}
+  </script>
+	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	<script>AOS.init();</script>
+  <script src="{{ url_for('static', filename='/JS/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='/routesjs/dashboard.js') }}"></script>
+</body>
+</html>

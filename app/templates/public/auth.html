@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="./assets/ms_icons/icons.css">
+	<link rel="stylesheet" href="./CSS/global.css">
+	<link rel="stylesheet" href="./CSS/main.css">
+	<link rel="stylesheet" href="./CSS/main.mdc.sm.css">
+	<link rel="stylesheet" href="./CSS/main.mdc.md.css">
+	<link rel="stylesheet" href="./CSS/main.mdc.lg.css">
+	<link rel="stylesheet" href="./CSS/main.mdc.xl.css">
+	<link rel="stylesheet" href="./CSS/main.mdc.xxl.css">
+	<script src="https://kit.fontawesome.com/92e004f315.js" crossorigin="anonymous"></script>
+	<title>Authentication</title>
+</head>
+<body class="app" id="auth_root">
+	<header class="app-header -hidden"></header>
+	<main class="route col-left active" id="get-started">
+		<div class="row-center mdc-ss mdc -gap-md -pyt-md occupy-x -justify-left" style="padding-left: 4%;padding-right:4%">
+			<a href="./index.html" class="button app-navlink icon-button" data-route="home">
+				<span class="ms-rounded">arrow_back</span>
+			</a>
+			<span class="subtitle-text-xs mdc lg-xl-xxl-hidden bold-text">Welcome to AlgoTrade</span>
+		</div>
+		<section class="auth-section mdc br col-2">
+			<!--
+					Auth container wraps the main parent container of both the signup and login forms.
+					It has a shadow applied to it for a nice popup effect on lg, xl & xxl screens.
+			-->
+			<div class="auth-container col-center mdc-ss mdc -pxl-sm -pxr-sm -pyt-lg -pyb-md">
+				<div class="col-center -gap-md occupy-x">
+					<!--
+							This is the main parent wrapper for the tab content container which is parent to individual forms
+							it has a display type of grid and allows for content switching efficiently, which also is made possible by 
+							toggling an `active` css classname on a form to hide one and show the other and so on.
+					-->
+					<div class="tab-content-wrapper">
+						<!--
+								Closest parent container for the signup form
+						-->
+						<div class="tab-content col-center -gap-md form-type active" data-tab="signup-form">
+							<span class="subtitle-text-sm mdc sm-md-hidden bold-text">Welcome to AlgoTrade</span>
+							<form id="signup-form" action="/" method="POST">
+								<div class="col-center -gap-sm">
+									<div class="mdc br col-2 -gap-sm">
+										<div class="col-left -gap-xs occupy-x">
+											<label class="outside-inp" for="signup-form-fname">
+												<span class="body-text-sm medium-text">First name *</span>
+											</label>
+											<div class="inp-field char-inp sm c-normal">
+												<input type="text" name="fname" id="signup-form-fname" placeholder="John">
+											</div>
+											<div class="inp-field--tooltip -gap-xs" id="signup-form-fname_tooltip">
+												<span class="ms-rounded body-text-sm">error</span>
+												<span class="body-text-xs">Please add a first name!</span>
+											</div>
+										</div>
+										<div class="col-left -gap-xs occupy-x">
+											<label class="outside-inp" for="signup-form-lname">
+												<span class="body-text-sm medium-text">Last name *</span>
+											</label>
+											<div class="inp-field char-inp sm c-normal">
+												<input type="text" name="lname" id="signup-form-lname" placeholder="Doe">
+											</div>
+											<div class="inp-field--tooltip -gap-xs" id="signup-form-lname_tooltip">
+												<span class="ms-rounded body-text-sm">error</span>
+												<span class="body-text-xs">Please add a last name!</span>
+											</div>
+										</div>
+									</div>
+									<div class="col-left -gap-xs occupy-x"> 
+										<label class="outside-inp" for="signup-form-email"> 
+											<span class="body-text-sm medium-text">Email *</span>
+										</label>
+										<div class="inp-field char-inp sm c-normal"> 
+											<input type="email" name="email" id="signup-form-email" placeholder="email@example.com">
+										</div>
+										<div class="inp-field--tooltip -gap-xs" id="signup-form-email_tooltip">
+											<span class="ms-rounded body-text-sm">error</span>
+											<span class="body-text-xs">Invalid email address!</span>
+										</div>
+									</div>
+									<div class="col-left -gap-xs occupy-x"> 
+										<label class="outside-inp" for="signup-form-password"> 
+											<span class="body-text-sm medium-text">Password *</span> 
+										</label>
+										<div class="inp-field char-inp sm c-normal"> 
+											<input type="password" name="password" id="signup-form-password" 
+											placeholder="Password"> 
+										</div>
+										<div class="inp-field--tooltip -gap-xs -align-start" id="signup-form-password_tooltip">
+											<span class="ms-rounded body-text-sm">error</span>
+											<span class="body-text-xs">
+												Passwords must be 8 - 16 characters in length with a special character, number, lowercase
+												and uppercase characters.
+											</span>
+										</div>
+									</div>
+									<div class="col-left -gap-xs occupy-x"> 
+										<label class="outside-inp" for="signup-form-confirm_password"> 
+											<span class="body-text-sm medium-text">Confirm password *</span>
+										</label>
+										<div class="inp-field char-inp sm c-normal"> 
+											<input type="password" name="confirm_password" id="signup-form-confirm_password"
+											placeholder="Password"> 
+										</div>
+										<div class="inp-field--tooltip -gap-xs" id="signup-form-confirm_password_tooltip">
+											<span class="ms-rounded body-text-sm">error</span>
+											<span class="body-text-xs">Passwords must match!</span>
+										</div>
+									</div>
+									<label class="row-left -align-start -gap-xs occupy-x" for="signup-form-accept_terms"> 
+										<input type="checkbox" name="accepted_terms" id="signup-form-accept_terms" hidden>
+										<div class="checkbox"></div>
+										<span class="body-text-sm" style="color: var(--light)">
+											I agree to the 
+											<a href="/">Terms of service</a> and 
+											<a href="/">Privacy policy</a>
+										</span>
+									</label>
+									<div class="inp-field submit button primary-button sm c-normal"> 
+										<input type="submit" value="Sign up"> 
+									</div>
+									<div class="row-center occupy-x"> 
+										<span class="body-text-sm" style="color: var(--light)">Or Continue with</span> 
+									</div>
+								</div>
+							</form>
+							<div class="row-center -gap-md occupy-x"> 
+								<button class="icon-button sm c-normal"><span class="fab fa-google"></span></button> 
+								<button class="icon-button sm c-normal"><span class="fab fa-twitter"></span></button> 
+							</div>
+							<div class="row-center -gap-xs occupy-x"> 
+								<span class="body-text-sm" style="color: var(--light)">Already have an account?</span> 
+								<button class="text-button body-text-sm switch-tab-btn" id="login">Log In</button> 
+							</div>
+						</div>
+						<!-- 
+								Closest parent container for the login form
+						-->
+						<div class="tab-content col-center -gap-md form-type" data-tab="login-form">
+							<span class="subtitle-text-sm mdc sm-md-hidden bold-text">Welcome to AlgoTrade</span>
+							<form id="login-form" action="">
+								<div class="col-center -gap-md">
+									<div class="col-left -gap-xs occupy-x"> 
+										<label class="outside-inp" for="login-form-email"> 
+											<span class="body-text-sm medium-text">Email</span>
+										</label>
+										<div class="inp-field char-inp sm c-normal"> 
+											<input type="email" name="email" id="login-form-email" placeholder="email@example.com">
+										</div>
+										<div class="inp-field--tooltip -gap-xs" id="login-form-email_tooltip">
+											<span class="ms-rounded body-text-sm">error</span>
+											<span class="body-text-xs">Email address does not exist!</span>
+										</div>
+									</div>
+									<div class="col-left -gap-xs occupy-x"> 
+										<label class="outside-inp" for="login-form-password"> 
+											<span class="body-text-sm medium-text">Password</span> 
+										</label>
+										<div class="inp-field char-inp sm c-normal"> 
+											<input type="password" name="password" id="login-form-password" 
+											placeholder="Password"> 
+										</div>
+										<div class="inp-field--tooltip -gap-xs" id="login-form-password_tooltip">
+											<span class="ms-rounded body-text-sm">error</span>
+											<span class="body-text-xs">
+												Incorrect password!
+											</span>
+										</div>
+									</div>
+									<div class="inp-field submit button primary-button sm c-normal">
+										<input type="submit" value="Log in">
+									</div>
+								</div>
+							</form>
+							<div class="row-center -gap-xs occupy-x">
+								<span class="body-text-sm" style="color: var(--light)">Don't have an account?</span>
+								<button class="text-button body-text-sm switch-tab-btn" id="signup">Sign up</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+	<main class="row-center null-search-results">
+		<span class="subtitle-text-sm">No Results for</span>&nbsp;
+		<span class="subtitle-text-sm highlight"></span>
+	</main>
+	<script src="./JS/main.js"></script>
+	<script src="./routesjs/auth.js"></script>
+</body>
+
+</html>

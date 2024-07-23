@@ -1,0 +1,168 @@
+<div class="tab-content-wrapper deposit-modal -pxy-sm c-normal">
+        <div class="tab-content col-center -gap-md form-type deposit-tab active" data-tab="crypto-payment-method--tab">
+          <div class="col-left occupy-x">
+            <div class="row-left -gap-sm">
+              <span class="close-deposit-modal ms-rounded">arrow_back</span>
+              <span class="subtitle-text-md">Fund wallet</span>
+            </div>
+          </div>
+          <form action="" id="crypto-payment-method--form">
+            <div class="col-center -gap-md">
+              <div class="col-left -gap-xs occupy-x">
+                <label class="outside-inp" for="signup-form-fname">
+                  <span class="body-text-sm medium-text">Select preferred crypto</span>
+                </label>
+                <div class="row-left occupy-x">
+                  <!--
+                      Crypto tokens custom selection element
+                  -->
+                  <div class="card filled-card col-left sm c-normal occupy-x" id="deposit-crypto-tokens">
+                    <div class="row-left -gap-sm -pxy-sm occupy-x selected-token active"></div>
+                    <div class="row-left -gap-sm -pxy-sm occupy-x token active" data-option="btc">
+                      <option value="BTC" id="btc" hidden></option>
+                      <div class="avatar xs"></div>
+                      <span class="body-text-sm row-center -gap-xs bold-text">
+                        <span class="selected-purchase-amt"></span>
+                        <span>BTC</span>
+                      </span>
+                    </div>
+                    <div class="row-left -gap-sm -pxy-sm occupy-x token" data-option="eth">
+                      <option value="ETH" id="eth" hidden></option>
+                      <div class="avatar xs"></div>
+                      <span class="body-text-sm row-center -gap-xs bold-text">
+                        <span class="selected-purchase-amt"></span>
+                        <span>Ethereum</span>
+                      </span>
+                    </div>
+                    <div class="row-left -gap-sm -pxy-sm occupy-x token" data-option="bnb">
+                      <option value="BNB" id="bnb" hidden></option>
+                      <div class="avatar xs"></div>
+                      <span class="body-text-sm row-center -gap-xs bold-text">
+                        <span class="selected-purchase-amt"></span>
+                        <span>Binance Smart Chain</span>
+                      </span>
+                    </div>
+                    <div class="row-left -gap-sm -pxy-sm occupy-x token" data-option="usdt">
+                      <option value="USDT" id="usdt" hidden></option>
+                      <div class="avatar xs"></div>
+                      <span class="body-text-sm row-center -gap-xs bold-text">
+                        <span class="selected-purchase-amt"></span>
+                        <span>Tether USD</span>
+                      </span>
+                    </div>
+                    <div class="row-left -gap-sm -pxy-sm occupy-x token" data-option="sol">
+                      <option value="SOL" id="sol" hidden></option>
+                      <div class="avatar xs"></div>
+                      <span class="body-text-sm row-center -gap-xs bold-text">
+                        <span class="selected-purchase-amt"></span>
+                        <span>Solana</span>
+                      </span>
+                    </div>
+                    <div class="row-left -gap-sm -pxy-sm occupy-x token" data-option="ltc">
+                      <option value="LTC" id="ltc" hidden></option>
+                      <div class="avatar xs"></div>
+                      <span class="body-text-sm row-center -gap-xs bold-text">
+                        <span class="selected-purchase-amt"></span>
+                        <span>Litecoin</span>
+                      </span>
+                    </div>
+                    <div class="row-left -gap-sm -pxy-sm occupy-x token" data-option="trx">
+                      <option value="TRX" id="trx" hidden></option>
+                      <div class="avatar xs"></div>
+                      <span class="body-text-sm row-center -gap-xs bold-text">
+                        <span class="selected-purchase-amt"></span>
+                        <span>Tron</span>
+                      </span>
+                    </div>
+                    <div class="row-left -gap-sm -pxy-sm occupy-x token" data-option="matic">
+                      <option value="DOGE" id="doge" hidden></option>
+                      <div class="avatar xs"></div>
+                      <span class="body-text-sm row-center -gap-xs bold-text">
+                        <span class="selected-purchase-amt"></span>
+                        <span>Doge</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="inp-field--tooltip -gap-xs" id="deposit-crypto-tokens_tooltip">
+                  <span class="ms-rounded body-text-sm">error</span>
+                  <span class="body-text-xs">Select at least one crypto token!</span>
+                </div>
+                <div class="inp-field--tooltip -gap-xs" id="empty-amt_tooltip">
+                  <span class="ms-rounded body-text-sm">error</span>
+                  <span class="body-text-xs">Minimum amount is $150.00</span>
+                </div>
+              </div>
+              <div class="col-left -gap-xs occupy-x">
+                <label class="outside-inp">
+                  <span class="body-text-sm medium-text">How much will you like to spend?</span>
+                </label>
+                <div class="row-left -align-start -gap-sm occupy-x">
+                  <div class="inp-field char-inp xs -gap-sm c-normal" style="width: auto;">
+                    <div class="avatar xs" style="background-image: url('../assets/images/dashboard_crypto_token_icons/usdt.png');"></div>
+                    <span class="body-text-sm">USD</span>
+                  </div>
+                  <div class="col-left -gap-xs occupy-x">
+                    <div class="inp-field char-inp sm c-normal">
+                      <input type="tel" name="purchase-amt" id="purchase-amt" placeholder="min 150.00">
+                    </div>
+                    <div class="inp-field--tooltip -gap-xs" id="purchase-amt-min_tooltip">
+                      <span class="ms-rounded body-text-sm">error</span>
+                      <span class="body-text-xs">Minimum amount is $150.00</span>
+                    </div>
+                    <div class="inp-field--tooltip -gap-xs" id="purchase-amt-max_tooltip">
+                      <span class="ms-rounded body-text-sm">error</span>
+                      <span class="body-text-xs">Maximum amount is $999999.00</span>
+                    </div>
+                  </div>
+                </div> 
+              </div>
+              <div class="inp-field submit proceed-to-payment button primary-button sm c-normal">
+                <input class="switch-tab-btn" type="submit" value="Proceed to payment" id="crypto-payment-address--tab">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="tab-content col-center -gap-md form-type" data-tab="crypto-payment-address--tab">
+          <form action="" id="crypto-payment-address--form">
+            <div class="col-left -gap-sm -myb-md occupy-x">
+              <span class="subtitle-text-md">Complete purchase</span>
+              <span class="body-text-sm" style="color: var(--light)">
+                To fund your wallet, send the set amount to the wallet address provided below to complete the purchase.
+                The payment window will close after 5 minutes elapses.
+              </span>
+            </div>
+            <div class="col-center -myb-md occupy-x">
+              <div class="card filled-card row-center subtitle-text-sm -pxy-xs medium-text c-normal" style="min-width: 120px" id="timer">05:00</div>
+            </div>
+            <div class="col-center -gap-md">
+              <div class="col-left -gap-xs occupy-x">
+                <div class="row-left occupy-x">
+                  <div class="card filled-card col-left sm c-normal occupy-x" id="selected-crypto-token">
+                    <span class="body-text-md -pxl-sm -pxr-sm -pyt-sm">You will pay</span>
+                    <div class="row-left -gap-sm -pxy-sm occupy-x selected-token-payment"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-left -gap-xs occupy-x wallet-addr-to-copy" style="color: var(--light);white-space: nowrap;overflow-x: auto;">
+                <div class="row-left -gap-xs" style="color: var(--accent);">
+                  <span class="body-text-xs ms-rounded">info</span>
+                  <span class="body-text-xs">Click on wallet address to copy</span>
+                </div>
+                <div class="card filled-card col-left sm -pxy-sm c-normal occupy-x" id="wallet-addr-container"
+                style="user-select: auto!important;"></div>
+                <span class="copied-addr-tooltip -align-center body-text-xs occupy-x">Wallet address copied! <span class="ms-rounded">check</span></span>
+              </div>
+              <div class="mdc br col-2 row-space -gap-xs c-normal">
+                <button class="row-center secondary-button sm -gap-xs switch-tab-btn" id="crypto-payment-method--tab">
+                  <span class="ms-rounded">close</span>
+                  <span>Cancel payment</span>
+                </button>
+                <div class="inp-field submit primary-button sm">
+                  <input type="submit" value="Confirm payment" id="confirm-payment">
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>

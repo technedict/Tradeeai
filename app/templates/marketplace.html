@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/ms_icons/icons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/main.mdc.sm.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/main.mdc.md.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='CSS/main.mdc.lg.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='CSS/main.mdc.xl.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='CSS/main.mdc.xxl.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <script src="https://kit.fontawesome.com/92e004f315.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Marketplace</title>
+</head>
+<body class="app" id="marketplace_root">
+	<!--
+			Header
+	-->
+	<header class="app-header">
+  	<div class="row-space occupy-x hide-on-toggle" style="gap:var(--md)"> 
+  		<span class="body-text-md bold-text row-left -align-center">
+  			<span class="ms-rounded -filled">star</span>&nbsp;AlgoTrade
+  		</span>
+  		<span class="icon-button ms-rounded toggle_sidebar">menu</span>
+  	</div>
+  	<div class="col-center search-results"></div>
+		<!--
+				Logout modal
+		-->
+		<div class="col-center -gap-sm -pxy-sm logout-modal c-normal">
+			<span class="subtitle-text-sm">Logout</span>
+			<span class="body-text-xs">Are you sure you want to logout?</span>
+			<div class="row-center -gap-sm occupy-x">
+				<button class="cancel-logout secondary-button xs c-normal">Cancel</button>
+				<a href="{{ url_for('auth.logout') }}"><button class="logout-user primary-button xs c-normal">Log out</button></a>
+			</div>
+		</div>
+  	<!--
+  			Sidebar for laptops and larger screens only
+  	-->
+  	<div class="app-sidebar mdc-ss mdc sm-md-hidden hide-on-toggle">
+    	<div class="row-right" style="gap:var(--xl)"> 
+    		<a href="{{ url_for('main.index') }}" class="app-navlink mdc-ss" data-scrollto="dashboard" data-route="dashboard"> <span>Dashboard</span> </a> 
+    		<a href="{{ url_for('main.market') }}" class="app-navlink mdc-ss active" data-route="marketplace"> <span>Marketplace</span> </a> 
+    		<a href="{{ url_for('main.faq') }}" class="app-navlink mdc-ss" data-route="support"> <span>Support</span> </a>
+				<!-- Update the background image of the user on the user profile icon -->
+    		<a class="mdc-ss show-logout-modal" data-action="logout"> <div class="user-profile-icon avatar avatar-1-1" style="margin: 0;"><img src="{{current_user.avatar(45)}}" alt="profile"></div></a></div> </a> 
+    	</div>
+  	</div>
+  	<!--
+  			Search bar
+  	-->
+  	<div class="row-center -hidden">
+  		<div class="inp-field search c-normal occupy-x" style="gap:var(--xs)">
+  			<button class="icon-button search-button">
+  				<span class="ms-rounded">search</span>
+  			</button>
+  			<input class="search-bar" type="search" name="homePageSearchBar" id="homePageSearchBar"
+  				placeholder="Search crypto" autocomplete="false">
+  		</div>
+  	</div>
+	</header>
+	<!--
+			Sidebar for mobile devices and tablets only
+	-->
+	<div class="app-sidebar mdc-sm mdc lg-xl-xxl-hidden" style="gap:var(--xl)">
+  	<div class="row-right"> 
+  		<button class="icon-button ms-rounded toggle_sidebar">Close</button> 
+  	</div>
+  	<!-- 
+  			N/B: app-navlink with no href is not a router!
+  			what is does is that it scrolls the window to a section with matching id
+  			as its data-scrollto value.
+  			
+  			Those with both a href and data-scrollto do almost the same scroll function,
+  			but are routers too
+  	-->
+  	<div class="col-center" style="gap:var(--sm)">
+			<!-- 
+					This should bring up a simple modal with a background-color of var(--dark), a border of 1px solid var(--light-fg-hue-far)
+					and a dark box shadow; with a logout option.
+			-->
+      <a class="mdc-sm mdc-ss c-normal show-logout-modal" data-action="logout">
+				<!-- Update the background image of the user on the user profile icon -->
+        <div class="user-profile-icon avatar sm c-round" style="margin: 0;"><img src="{{current_user.avatar(50)}}" alt="profile"></div>
+				<div class="col-left">
+					<span class="user-full-name body-text-md bold-text">{{current_user.firstname + " " + current_user.lastname}}</span>
+					<span class="body-text-xs">Click to log out</span>
+				</div>
+      </a>
+  		<a href="{{ url_for('main.index') }}" class="app-navlink mdc-sm mdc-ss c-normal" data-scrollto="dashboard" data-route="dashboard"> 
+        <span class="ms-rounded">home</span>
+        <span>Dashboard</span>
+      </a> 
+    	<a href="{{ url_for('main.market') }}" class="app-navlink mdc-sm mdc-ss c-normal active" data-route="marketplace"> 
+        <span class="ms-rounded">store</span>
+        <span>Marketplace</span> 
+      </a> 
+      <a href="{{ url_for('main.faq') }}" class="app-navlink mdc-sm mdc-ss c-normal" data-route="support"> 
+        <span class="ms-rounded">support_agent</span>
+        <span>Support</span> 
+      </a> 
+  	</div>
+	</div>
+	<!-- 
+			This section element below serves as a scrollto element of the dashboard navlink, why? because the offsetTop prop of the window.scrollTo
+			js function scrolls the window FULLY to the top of the page. TRY deleting the home id from it and adding it instead to the section
+			that is nested in the main element to see what I'm talking about.
+	-->
+	<section id="marketplace" hidden></section>
+  <main class="route col-center active -gap-md">
+  	<section class="mdc mdc-ss -pyt-md hide-if-bot-settings-modal-isActive">
+		{% with messages = get_flashed_messages(with_categories=True) %}
+			{% if messages %}
+				{% for category, message in messages %}
+					<div class="dismissible-modal row-space -gap-sm -pxy-sm -align-start" 
+					style="background: var(--dark);color: var(--light); width: 90%;max-width: 500px;margin: auto;margin-top: 20px;border: 1px solid var(--light-hue-bg-far); border-radius: 15px!important; box-shadow: 0 0 9px 3px #00000010;z-index: 99;" id="notification">
+					<!--
+						The text in the notification text has to be changed dynamically.
+						depending on the message. The color will be handled by the css 
+						classnames => success: green, danger: red; info: orange.
+					-->
+					<span class="body-text-sm notification-text {{category}}">
+						{{message}}
+					</span>
+					<!-- 
+							button to dismiss the notification
+					-->
+					<button class="dismiss-notification icon-button md ms-rounded" id="close-notification" style="padding: 5px 0;">close</button>
+					</div>
+				{% endfor %}
+			{% endif %}
+      	{% endwith %}
+      <div class="row-space mdc br col-2 -gap-xl -pxy-sm" style="margin-top: 20px;">
+        <span class="title-text bold-text">Marketplace</span>
+      </div>
+      <!--
+    			Panel showing user bots
+    	-->
+      <div class="user-panel row-center mdc br col-2 mdc-ss -pyt-sm -pyb-sm -pxl-sm -pxr-sm -gap-xs">
+        <div class="card filled-card col-center -pyt-sm -pyb-sm -pxl-lg -pxr-lg -gap-xs c-normal occupy-x">
+          <span class="user-available-balance subtitle-text-md bold-text">1</span>
+          <span class="body-text-sm light-text">Active bot</span>
+        </div>
+        <div class="card filled-card col-center -pyt-sm -pyb-sm -pxl-lg -pxr-lg -gap-xs c-normal occupy-x">
+          <span class="user-available-balance subtitle-text-md bold-text">5</span>
+          <span class="body-text-sm light-text">Available bots</span>
+        </div>
+      </div>
+  	</section>
+  	<!--
+        Bots list
+  	-->
+  	<section class="mdc mdc-ss -pyt-md -pyb-md hide-if-bot-settings-modal-isActive" style="color: var(--light)">
+      <div class="bot-list--nav col-left -pxy-sm -gap-xs occupy-x">
+        <span class="bot-list--tab-btn subtitle-text-sm bold-text c-normal occupy-x" id="available-bots">Available Bots</span>
+	      <span class="body-text-sm">
+		      Please note, you get to claim 93% of profits made by any bot.
+	      </span>
+			</div>
+			<div class="tab-content-wrapper -pxy-sm c-normal">
+				<div class="tab-content col-center form-type owned-bots-tab active" data-list="owned-bots">
+					<div class="bot-wrapper row-left mdc br col-3 -pyt-sm -pyb-sm -gap-sm occupy-x" id="bot-1">
+						<div class="bot-img-preview bot-1"></div>
+						<div class="bot-info col-left">
+							<span class="body-text-md bold-text">TradeMaster 360</span>
+							<span class="body-text-xs">
+								An AI powered bot that uses machine learning to analyze market trends and execute trades in real-time,
+								desisgned for both novice and experienced traders.
+							</span>
+						</div>
+						<div class="bot-actions row-right -gap-sm occupy-x">
+							{% if current_user.bot != 'trademaster360' %}
+								<a href="{{ url_for('main.changebot', bot='trademaster360') }}"><button class="primary-button xs c-normal" id="bot-1">Activate bot</button></a>
+							{% else %}	
+								<button class="primary-button xs c-normal" id="bot-1">Current bot</button>
+							{% endif %}
+						</div>
+					</div>
+					<div class="bot-wrapper mdc br col-3 row-left -pyt-sm -pyb-sm -gap-sm occupy-x" id="bot-2">
+						<div class="bot-img-preview bot-2"></div>
+						<div class="bot-info col-left">
+							<span class="body-text-md bold-text">CryptoSage</span>
+							<span class="body-text-xs">
+								Specializing in cryptocurrency markets, this bot leverages advanced algorithms to predict price movements
+								and optimize trading strategies  for maximum returns.
+							</span>
+						</div>
+						<div class="bot-actions row-right -gap-sm occupy-x">
+							{% if current_user.bot != 'cryptosage' %}
+								<a href="{{ url_for('main.changebot', bot='cryptosage') }}"><button class="primary-button xs c-normal" id="bot-1">Activate bot</button></a>
+							{% else %}	
+								<button class="primary-button xs c-normal" id="bot-1">Current bot</button>
+							{% endif %}
+						</div>
+					</div>
+					<div class="bot-wrapper mdc br col-3 row-left -pyt-sm -pyb-sm -gap-sm occupy-x" id="bot-3">
+						<div class="bot-img-preview bot-3"></div>
+						<div class="bot-info col-left">
+							<span class="body-text-md bold-text">ForexNinja</span>
+							<span class="body-text-xs">
+								A bot tailored for the forex market, offering automated trading strategies, risk management features, and real-time
+								market analysis to help traders capitalize on currency fluctuations.
+							</span>
+						</div>
+						<div class="bot-actions row-right -gap-sm occupy-x">
+							{% if current_user.bot != 'forexninja' %}
+								<a href="{{ url_for('main.changebot', bot='forexninja') }}"><button class="primary-button xs c-normal" id="bot-1">Activate bot</button></a>
+							{% else %}	
+								<button class="primary-button xs c-normal" id="bot-1">Current bot</button>
+							{% endif %}
+						</div>
+					</div>
+					<div class="bot-wrapper mdc br col-3 row-left -pyt-sm -pyb-sm -gap-sm occupy-x" id="bot-4">
+						<div class="bot-img-preview bot-4"></div>
+						<div class="bot-info col-left">
+							<span class="body-text-md bold-text">ArbitageBot</span>
+							<span class="body-text-xs">
+								Designed for arbitrage trading, this bot scans multiple exchanges to find and exploit price discrepancies, ensuring
+								low-risk profits from market inefficiencies.
+							</span>
+						</div>
+						<div class="bot-actions row-right -gap-sm occupy-x">
+							{% if current_user.bot != 'arbitagebot' %}
+								<a href="{{ url_for('main.changebot', bot='arbitagebot') }}"><button class="primary-button xs c-normal" id="bot-1">Activate bot</button></a>
+							{% else %}	
+								<button class="primary-button xs c-normal" id="bot-1">Current bot</button>
+							{% endif %}
+						</div>
+					</div>
+					<div class="bot-wrapper mdc br col-3 row-left -pyt-sm -pyb-sm -gap-sm occupy-x" id="bot-5">
+						<div class="bot-img-preview bot-5"></div>
+						<div class="bot-info col-left">
+							<span class="body-text-md bold-text">QuantTrader X</span>
+							<span class="body-text-xs">
+								An advanced quant-based trading bot that uses complex mathematical models and statistical analysis to develop and 
+								execute sophisticated trading strategies across various asset classes.
+							</span>
+						</div>
+						<div class="bot-actions row-right -gap-sm occupy-x">
+							{% if current_user.bot != 'quantraderx' %}
+								<a href="{{ url_for('main.changebot', bot='quantraderx') }}"><button class="primary-button xs c-normal" id="bot-1">Activate bot</button></a>
+							{% else %}	
+								<button class="primary-button xs c-normal" id="bot-1">Current bot</button>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+    </section>
+		<div class="bot-settings-modal col-left -align-start">
+			<div class="row-left -pxy-sm -gap-md">
+				<a href="{{ url_for('main.market') }}"><button class="icon-button ms-rounded" id="close-bot-settings">arrow_back</button></a>
+			</div>
+			<div class="col-left -pxy-sm c-normal -myb-sm" style="max-width: 800px;margin-left: auto;margin-right:auto;">
+				<form id="bot-settings-form">
+					<div class="row-left -myb-md occupy-x">
+						<span class="title-text bold-text">Bot settings</span>
+					</div>
+					<div class="col-left -gap-sm -myb-lg occupy-x" style="color: var(--light);">
+						<div class="col-left -gap-xs">
+							<span class="subtitle-text-sm bold-text">Stop loss</span>
+							<span class="body-text-xs -myb-sm light-text">
+								The percentage at which your bot will sell if the price drops below your purchase price.
+								This setting is useful for protecting your investment from significant losses.
+							</span>
+							<div class="mdc br col-2 -align-center -gap-sm">
+								<span class="body-text-md">Stop loss percentage</span>
+								<div class="slider-wrapper row-right -align-center -gap-xs">
+									<input class="slider" type="range" min="0" max="100" step="1" name="stop-loss" id="stop-loss">
+									<span class="body-text-sm" id="stop-loss-percentage">50%</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-left -gap-sm -myb-lg occupy-x" style="color: var(--light);">
+						<div class="col-left -gap-xs">
+							<span class="subtitle-text-sm bold-text">Trading percentage</span>
+							<span class="body-text-xs -myb-sm light-text">
+								The percentage of your portfolio that your bot will use to enter trades. If you set this percentage too high,
+								it might result in large number of trades, which can increase the risk and fees associated with trading.
+							</span>
+							<div class="mdc br col-2 -align-center -gap-sm">
+								<span class="body-text-md">Trading percentage</span>
+								<div class="slider-wrapper row-right -align-center -gap-xs">
+									<input class="slider" type="range" min="0" max="100" step="1" name="trading" id="trading">
+									<span class="body-text-sm" id="trading-percentage">50%</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-left -gap-sm -myb-lg occupy-x" style="color: var(--light);">
+						<div class="col-left -gap-xs">
+							<span class="subtitle-text-sm bold-text">Take profit</span>
+							<span class="body-text-xs -myb-sm light-text">
+								The percentage at which your bot will sell if the price increases. This setting is useful for locking in
+								profits and reducing the risk of losses.
+							</span>
+							<div class="mdc br col-2 -align-center -gap-sm">
+								<span class="body-text-md">Take profit percentage</span>
+								<div class="slider-wrapper row-right -align-center -gap-xs">
+									<input class="slider" type="range" min="0" max="100" step="1" name="take-profit" id="take-profit">
+									<span class="body-text-sm" id="take-profit-percentage">50%</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="inp-field submit primary-button sm c-normal" style="max-width: 200px;float: right;" id="save-settings">
+						<input type="submit" value="Save">
+					</div>
+				</form>
+			</div>
+		</div>
+	</main>
+	<!--
+			Container for null search results
+	-->
+	<main class="row-center null-search-results">
+		<span class="subtitle-text-sm">No Results for</span>&nbsp;
+		<span class="subtitle-text-sm highlight"></span>
+	</main>
+	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	<script>AOS.init();</script>
+	<script src="{{ url_for('static', filename='/routesjs/marketplace.js') }}"></script>
+	<script src="{{ url_for('static', filename='/JS/main.js') }}"></script>
+</body>
+</html>

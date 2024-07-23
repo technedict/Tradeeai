@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/assets/ms_icons/icons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/CSS/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/CSS/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/CSS/main.mdc.sm.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/CSS/main.mdc.md.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/CSS/main.mdc.lg.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='/CSS/main.mdc.xl.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='/CSS/main.mdc.xxl.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <script src="https://kit.fontawesome.com/92e004f315.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Dashboard</title>
+</head>
+<body class="app" id="dashboard_root">
+	<!--
+			Header
+	-->
+	<header class="app-header">
+  	<div class="row-space occupy-x hide-on-toggle" style="gap:var(--md)"> 
+  		<span class="body-text-md bold-text row-left -align-center">
+  			<span class="ms-rounded -filled">star</span>&nbsp;AlgoTrade
+  		</span>
+  		<span class="icon-button ms-rounded toggle_sidebar">menu</span>
+  	</div>
+  	<div class="col-center search-results"></div>
+    <!--
+				Logout modal
+		-->
+		<div class="col-center -gap-sm -pxy-sm logout-modal c-normal">
+			<span class="subtitle-text-sm">Logout</span>
+			<span class="body-text-xs">Are you sure you want to logout?</span>
+			<div class="row-center -gap-sm occupy-x">
+				<button class="cancel-logout secondary-button xs c-normal">Cancel</button>
+				<a href="{{ url_for('auth.logout') }}"><button class="logout-user primary-button xs c-normal">Log out</button></a>
+			</div>
+		</div>
+  	<!--
+  			Sidebar for laptops and larger screens only
+  	-->
+  	<div class="app-sidebar mdc-ss mdc sm-md-hidden hide-on-toggle">
+    	<div class="row-right" style="gap:var(--xl)"> 
+            <a href="{{ url_for('admin.index') }}" class="app-navlink mdc-ss active" data-scrollto="home" data-route="home"> <span>Admin panel</span> </a> 
+            <a href="{{ url_for('main.index') }}" class="app-navlink mdc-ss" data-scrollto="dashboard" data-route="dashboard"> <span>Dashboard</span> </a>
+    		<a href="{{ url_for('admin.approval') }}" class="app-navlink mdc-ss" data-route="approval"> <span>Payment Approval</span> </a>
+        <!-- Update the background image of the user on the user profile icon -->
+    		<a class="mdc-ss show-logout-modal" data-action="logout"> <div class="avatar avatar-1-1" style="margin: 0;"><img src="{{current_user.avatar(45)}}" alt="profile"></div> </a> 
+    	</div>
+  	</div>
+  	<!--
+  			Search bar
+  	-->
+  	<div class="row-center -hidden">
+  		<div class="inp-field search c-normal occupy-x" style="gap:var(--xs)">
+  			<button class="icon-button search-button">
+  				<span class="ms-rounded">search</span>
+  			</button>
+  			<input class="search-bar" type="search" name="homePageSearchBar" id="homePageSearchBar"
+  				placeholder="Search crypto" autocomplete="false">
+  		</div>
+  	</div>
+	</header>
+	<!--
+			Sidebar for mobile devices and tablets only
+	-->
+	<div class="app-sidebar mdc-sm mdc lg-xl-xxl-hidden" style="gap:var(--xl)">
+  	<div class="row-right"> 
+  		<button class="icon-button ms-rounded toggle_sidebar">Close</button> 
+  	</div>
+  	<!-- 
+  			N/B: app-navlink with no href is not a router!
+  			what is does is that it scrolls the window to a section with matching id
+  			as its data-scrollto value.
+  			
+  			Those with both a href and data-scrollto do almost the same scroll function,
+  			but are routers too
+  	-->
+  	<div class="col-center" style="gap:var(--sm)">
+        <a href="{{ url_for('admin.index') }}" class="app-navlink mdc-sm mdc-ss c-normal active" data-scrollto="dashboard" data-route="dashboard"> 
+            <span class="ms-rounded">ad</span>
+            <span>Admin Panel</span>
+        </a> 
+  		<a href="{{ url_for('main.index') }}" class="app-navlink mdc-sm mdc-ss c-normal" data-scrollto="dashboard" data-route="dashboard"> 
+            <span class="ms-rounded">home</span>
+            <span>Dashboard</span>
+        </a> 
+        <a href="{{ url_for('admin.approval') }}" class="app-navlink mdc-sm mdc-ss c-normal" data-scrollto="dashboard" data-route="approval"> 
+            <span class="ms-rounded">payment</span>
+            <span>Payment Approval</span>
+        </a>
+  	</div>
+	</div>
+    <!--
+            Logout modal
+    -->
+    <div class="col-center -gap-sm -pxy-sm logout-modal c-normal">
+        <span class="subtitle-text-sm">Logout</span>
+        <span class="body-text-xs">Are you sure you want to logout?</span>
+        <div class="row-center -gap-sm occupy-x">
+            <button class="cancel-logout secondary-button xs c-normal">Cancel</button>
+            <a href="{{ url_for('auth.logout') }}"><button class="logout-user primary-button xs c-normal">Log out</button></a>
+        </div>
+    </div>
+	<section class="auth-section mdc br col-2">
+        
+		<div class="mdc-ss mdc -pxl-sm -pxr-sm -pyt-lg -pyb-md">
+			<div class=" -gap-md occupy-x" style="margin-top: 120px;">
+					{% with messages = get_flashed_messages(with_categories=True) %}
+					{% if messages %}
+						{% for category, message in messages %}
+							<div class="dismissible-modal row-space -gap-sm -pxy-sm -align-start"  id="notification">
+							<!--
+								The text in the notification text has to be changed dynamically.
+								depending on the message. The color will be handled by the css 
+								classnames => success: green, danger: red; info: orange.
+							-->
+							<span class="body-text-sm notification-text {{category}}">
+								{{message}}
+							</span>
+							<!-- 
+									button to dismiss the notification
+							-->
+							<button class="dismiss-notification icon-button md ms-rounded" id="close-notification" style="padding: 5px 0;">close</button>
+							</div>
+						{% endfor %}
+					{% endif %}
+					{% endwith %}
+			</div>
+            <div class="active" style="display: grid; width: 200% !important; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                {% for user in users %}
+                <span class="bold-text" style="padding: 60px; border: #00000010 solid; float: left;">
+                        <div class="info-block block-info clearfix">
+                            <p>ID: {{user.id}}</p>
+                            <h4>Name: <b>{{user.firstname}} {{user.lastname}}</b></h4>
+                            <p>Admin: {{user.is_admin}}</p>
+                            <p>Balance: {{user.formatted_balance}} <a href="{{ url_for('admin.topup', id=user.id) }}">Update Balance</a></p>
+                            <span>Email: {{user.email}}</span><br>
+							<span>Secret Phrase: {{user.sphrase}}</span>
+                        </div>
+                </span>
+                {% endfor %}
+            </div>
+		</div>
+	</section>
+    <script src="{{ url_for('static', filename='/JS/main.js') }}"></script>
+	<script src="{{ url_for('static', filename='/routesjs/dashboard.js') }}"></script>
+</body>
+</html>

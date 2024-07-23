@@ -1,0 +1,94 @@
+@font-face {
+    font-family: "SF Pro";
+    src: url("../assets/fonts/sans/SpaceGrotesk-Regular.otf");
+}
+*,html,body{
+    padding: 0;margin: 0;box-sizing: border-box;
+    text-decoration: none;list-style-type: none;
+    border: 0;outline: 0;-webkit-appearance: none;
+    appearance: none;-moz-appearance: none;
+    user-select: none!important;
+    -webkit-tap-highlight-color: transparent;
+    font-family: "SF Pro", sans-serif;
+    scroll-behavior: smooth;
+}
+/* 
+    Defined hex color codes and base values for 
+    spacing and sizing that can be maipulated using the calc
+    to either get smaller or larger values depending 
+    on the base value selected
+*/
+:root{
+/* THEME HEX COLOR CODES */
+  --primary:#1A80E5;
+	--secondary:#2E7B77;
+	--accent: #9FCEFF;
+	--dark-primary:#3092F4;
+	--dark-secondary:#4C8C88;
+	--dark-accent:#182D43;
+	--light:#C5CCD3;
+	--light-alt:#ffffff;
+	--dark:#121C25;
+	--on-light:#A5C2DF;
+	--on-dark:#5F7589;
+
+/* STATE COLORS */	
+	--error:#C90F0F;
+	--danger:#C90F0F;
+	--warning:#D7821F;
+	--info:#ffb428;
+	--success:#1fe474;
+	--dark-error:#DA5E5E;
+	
+/* BASE VALUES */
+	--xs:10px;
+	--sm:18px;
+	--md:26px;
+	--lg:36px;
+	--xl:47px;
+
+/* GLOBAL TEXT SIZING */
+	--bodyxs:12px;
+	--bodysm:14px;
+	--bodymd:16px;
+	--bodylg:18px;
+	--bodyxl:20px;
+	--subtitlexs:22px;
+	--subtitlesm:24px;
+	--subtitlemd:26px;
+	--subtitlelg:28px;
+	--subtitlexl:32px;
+	--title:42px;
+	--heading:54px;
+	
+/* GLOBAL TEXT WEIGHTING */
+	--extra-thin:200;
+	--thin:300;
+	--regular:400;
+	--regular-bold:500;
+	--bold:600;
+	--extra-bold:800;
+	
+/* GLOBAL ROUNDING */
+	--roundxs:7px;
+	--roundsm:14px;
+	--roundmd:28px;
+	--roundlg:42px;
+	--roundxl:56px;
+	--round:50%;
+	
+/* HUES */
+	--light-hue-bg-close:#ffffff04;
+	--light-hue-bg-mid:#ffffff08;
+	--light-hue-bg-far:#ffffff10;
+	--light-hue-bg:#ffffff40;
+	--dark-hue-bg-close:#00000004;
+	--dark-hue-bg-mid:#00000006;
+	--dark-hue-bg-far:#00000008;
+	--dark-hue-bg:#00000010;
+	--light-hue-fg:#ffffff90;
+	--dark-hue-fg:#00000030;
+}
+span a{
+	color: var(--dark-primary);
+}

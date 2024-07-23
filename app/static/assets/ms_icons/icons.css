@@ -1,0 +1,62 @@
+/* GLOBAL ICON FONT SETTING */
+@font-face{/* Outlined */
+  font-family:"Material Symbols Outlined";
+  font-style:normal;
+  src:url(./extensions/MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].woff2) format("woff");
+}
+.ms-outlined{
+  font-family:"Material Symbols Outlined";
+  font-weight:normal;
+  font-style:normal;
+  font-size:24px;/* Preferred icon size */
+  display:inline-block;
+  line-height:1;
+  text-transform:none;
+  letter-spacing:normal;
+  word-wrap:normal;
+  white-space:nowrap;
+  direction:ltr;
+}
+@font-face{/* Rounded */
+  font-family:"Material Symbols Rounded";
+  font-style:normal;
+  src:url(./extensions/MaterialSymbolsRounded[FILL,GRAD,opsz,wght].woff2) format("woff");
+}
+.ms-rounded{
+  font-family:"Material Symbols Rounded";
+  font-weight:normal;
+  font-style:normal;
+  font-size:24px;/* Preferred icon size */
+  display:inline-block;
+  line-height:1;
+  text-transform:none;
+  letter-spacing:normal;
+  word-wrap:normal;
+  white-space:nowrap;
+  direction:ltr;
+}
+@font-face{/* Sharp */
+  font-family:"Material Symbols Sharp";
+  font-style:normal;
+  src:url(./extensions/MaterialSymbolsSharp[FILL,GRAD,opsz,wght].woff2) format("woff");
+}
+.ms-sharp{
+  font-family:"Material Symbols Sharp";
+  font-weight:normal;
+  font-style:normal;
+  font-size:24px;/* Preferred icon size */
+  display:inline-block;
+  line-height:1;
+  text-transform:none;
+  letter-spacing:normal;
+  word-wrap:normal;
+  white-space:nowrap;
+  direction:ltr;
+}
+.-filled{
+	font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24!important;
+}
